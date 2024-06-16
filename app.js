@@ -1,30 +1,29 @@
 let listaDeNumerosSorteados = [];
-let numeroMaximo = 3;
+let numeroMaximo = 10;
 let numeroSecreto = gerarNumeroAleatorio();
 let tentativas = 1;
 
 function exibirTextoNaTela(tag, texto) {
   let campo = document.querySelector(tag)
   campo.innerHTML = texto
-  responsiveVoice.speak(texto, "Portuguese Female", {rate: 1.3});
+  responsiveVoice.speak(texto, "Portuguese Female", { rate: 1.3 });
 };
 
 
 function exibirMensagemInicial() {
   exibirTextoNaTela('h1', 'Jogo do número secreto');
-  exibirTextoNaTela('p', 'Escolha um número entre 1 e 10');
+  exibirTextoNaTela('p', `Escolha um número entre 1 e ${numeroMaximo}`);
 }
 exibirMensagemInicial()
 
 function seInputVazio() {
   const input = document.querySelector('input');
   const botao = document.getElementById('chutar');
-
   input.addEventListener('input', function () {
-    if (input.value.trim() === '') {
-      botao.setAttribute('disabled', true)
+    if (input.value.trim() === '' || isNaN(input.value)) {
+      botao.setAttribute('disabled', true);
     } else {
-      botao.removeAttribute('disabled')
+      botao.removeAttribute('disabled');
     }
   });
 }
@@ -40,6 +39,7 @@ function verificarChute() {
   } else {
     if (chute > numeroSecreto) {
       exibirTextoNaTela('p', 'O número secreto é menor que ' + chute)
+
     } else {
       exibirTextoNaTela('p', 'O número secreto é maior que ' + chute)
     }
@@ -52,10 +52,10 @@ function verificarChute() {
 function gerarNumeroAleatorio() {
   let numeroEscolhido = parseInt(Math.random() * numeroMaximo + 1)
   let quantidadeDeNumerosSorteados = listaDeNumerosSorteados.length
-  if(quantidadeDeNumerosSorteados == numeroMaximo) {
+  if (quantidadeDeNumerosSorteados == numeroMaximo) {
     listaDeNumerosSorteados = [];
   }
-  if(listaDeNumerosSorteados.includes(numeroEscolhido)){
+  if (listaDeNumerosSorteados.includes(numeroEscolhido)) {
     return gerarNumeroAleatorio()
   } else {
     listaDeNumerosSorteados.push(numeroEscolhido)
@@ -66,7 +66,8 @@ function gerarNumeroAleatorio() {
 
 function limpaCampo() {
   chute = document.querySelector('input').value = ''
-  seInputVazio()
+  document.querySelector('input').focus()
+  document.getElementById('chutar').setAttribute('disabled', true);
 };
 
 function reiniciarJogo() {
@@ -77,3 +78,6 @@ function reiniciarJogo() {
   document.getElementById('reiniciar').setAttribute('disabled', true)
 
 }
+
+// Chama a função para habilitar/desabilitar o botão conforme o input
+document.addEventListener('DOMContentLoaded', seInputVazio);
