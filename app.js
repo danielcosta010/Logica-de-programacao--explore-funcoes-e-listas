@@ -36,6 +36,7 @@ function verificarChute() {
     exibirTextoNaTela('h1', 'Acertou!!!')
     exibirTextoNaTela('p', mensagemTentativas)
     document.getElementById('reiniciar').removeAttribute('disabled')
+    document.querySelector('input').setAttribute('disabled', true)
   } else {
     if (chute > numeroSecreto) {
       exibirTextoNaTela('p', 'O número secreto é menor que ' + chute)
@@ -76,6 +77,8 @@ function reiniciarJogo() {
   limpaCampo()
   tentativas = 1
   document.getElementById('reiniciar').setAttribute('disabled', true)
+  document.querySelector('input').removeAttribute('disabled')
+  document.querySelector('input').focus()
 
 }
 
